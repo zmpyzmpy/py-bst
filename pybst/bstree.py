@@ -15,7 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with PyBST.  If not, see <http://www.gnu.org/licenses/>.
-
 import collections
 
 class Node:
@@ -193,7 +192,7 @@ class BSTree:
         a new Node with key attribute key and value attribute
         value into T.
         """
-        if not isinstance(key,(int,long,float)):
+        if not isinstance(key,(int,float,long)):
             raise TypeError(str(key) + " is not a number")
         else:
             if not self.Root:
@@ -427,3 +426,32 @@ class BSTree:
                 self.delete(x)
         else:
             raise TypeError(str(iter) + " is not iterable")
+            
+    def search(self,key,*args):
+        if len(args) == 0:
+            return self.search(key,self.Root)
+        elif args[0] == None:
+            return None
+        elif args[0].key == key:
+            return args[0]
+        else:
+            if key < args[0].key:
+                return self.search(key,args[0].left)
+            else:
+                return self.search(key,args[0].right)
+    def search_NN(self,key,*args):
+        if len(args) == 0:
+            return self.search_NN(key,self.Root)
+            
+            
+        if key < args[0].key:
+            if args[0].left == None:
+                return args[0]
+            nd = self.search_NN(key,args[0].left)
+            return args[0] if abs(nd.key - key) > abs(args[0].key - key) else nd
+        else:
+            if args[0].right == None:
+                return args[0]
+            nd = self.search_NN(key,args[0].right)
+            return args[0] if abs(nd.key - key) > abs(args[0].key - key) else nd
+        return None
